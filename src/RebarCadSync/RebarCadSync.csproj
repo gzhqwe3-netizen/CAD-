@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>RebarCadSync</AssemblyName>
+    <RootNamespace>RebarCadSync</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="acdbmgd">
+      <HintPath>$(ACAD_DIR)\acdbmgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="acmgd">
+      <HintPath>$(ACAD_DIR)\acmgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CheckAcadDir" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(ACAD_DIR)' == ''" Text="ACAD_DIR environment variable is not set. Please set ACAD_DIR to your AutoCAD install folder (containing acmgd.dll and acdbmgd.dll)." />
+    <Error Condition="!Exists('$(ACAD_DIR)\\acmgd.dll')" Text="acmgd.dll not found under ACAD_DIR. Ensure ACAD_DIR points to your AutoCAD install folder." />
+    <Error Condition="!Exists('$(ACAD_DIR)\\acdbmgd.dll')" Text="acdbmgd.dll not found under ACAD_DIR. Ensure ACAD_DIR points to your AutoCAD install folder." />
+  </Target>
+</Project>
